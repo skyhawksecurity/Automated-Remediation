@@ -31,7 +31,7 @@ This setup runs a cloud formation stack that does the following:
 
 Setup steps:
 
-1. Click the [![Launch Stack](https://cdn.rawgit.com/buildkite/cloudformation-launch-stack-button-svg/master/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://raw.githubusercontent.com/skyhawksecurity/Automated-Remediation/main/cft-remediation-primary.yaml&stackName=SkyhawkSecuritySYNPrimaryAccountSetup) button and change the AWS region to where you want to deploy the Lambda code.
+1. Click the [![Launch Stack](https://cdn.rawgit.com/buildkite/cloudformation-launch-stack-button-svg/master/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://cnp-automated-remediation-us-east-1.s3.amazonaws.com/radware-cft-remediation-primary.yaml&stackName=RadwareCNPPrimaryAccountSetup) button and change the AWS region to where you want to deploy the Lambda code.
 2. Fill in the **ExternalID** parameter which you can take from the [SYN portal](https://app.skyhawk.security/#/data-center/remediation/account/setup/aws-account "SYN portal").
 3. Under the **Capabilities and transforms** section, click the following checkboxes:
 	1. I acknowledge that AWS CloudFormation might create IAM resources.
@@ -49,7 +49,7 @@ This setup runs a cloud formation stack that does the following:
 
 Setup steps:
 
-1. Click the [![Launch Stack](https://cdn.rawgit.com/buildkite/cloudformation-launch-stack-button-svg/master/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://raw.githubusercontent.com/skyhawksecurity/Automated-Remediation/main/cft-remediation-secondary.yaml&stackName=SkyhawkSecuritySYNSecondaryAccountSetup) button and change the AWS region to where you want to run the cloud formation stack in.
+1. Click the [![Launch Stack](https://cdn.rawgit.com/buildkite/cloudformation-launch-stack-button-svg/master/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://cnp-automated-remediation-us-east-1.s3.amazonaws.com/radware-cft-remediation-secondary.yaml&stackName=RadwareCNPSecondaryAccountSetup) button and change the AWS region to where you want to run the cloud formation stack in.
 2. Fill in the **PrimaryAWSAccountID** parameter with the AWS account ID on which you performed the primary account setup.
 3. Under the **Capabilities** section, click the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** checkbox.
 4. Click on **Create stack**.
