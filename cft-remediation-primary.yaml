@@ -3,21 +3,21 @@ Transform: AWS::Serverless-2016-10-31
 Parameters:
   ExternalID:
     Type: String
-    Description: The external ID provided in the CNP portal
+    Description: The external ID provided in the SYN portal
     AllowedPattern: '.+'
 
-Description: "Primary account setup for Radware CNP automated remediation"
+Description: "Primary account setup for Skyhawk Security SYN automated remediation"
 
 Resources:
   AssumeRole:
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: RadwareCNPCrossAccountRemediationRole
+      RoleName: SkyhawkSecuritySYNCrossAccountRemediationRole
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
           - Action: 'sts:AssumeRole'
-            Sid: RadwareCNPCrossAccountRemedy
+            Sid: SkyhawkSecuritySYNCrossAccountRemedy
             Effect: Allow
             Principal:
               AWS: 'arn:aws:iam::438643506655:root'
@@ -25,26 +25,26 @@ Resources:
               StringEquals:
                 'sts:ExternalId': !Ref ExternalID
       Policies:
-        - PolicyName: RadwareCNPCrossAccountRemediation
+        - PolicyName: SkyhawkSecuritySYNCrossAccountRemediation
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-              - Action: 
+              - Action:
                   - "lambda:InvokeFunction"
                   - "lambda:InvokeAsync"
                 Resource: !GetAtt RemediationFunction.Arn
                 Effect: Allow
-              - Action: 
+              - Action:
                   - "iam:SimulatePrincipalPolicy"
                 Effect: Allow
                 Resource: !Join [ '' , [ 'arn:aws:iam::' , !Ref AWS::AccountId , ':role/*'] ]
   RemediationFunction:
     Type: "AWS::Serverless::Function"
     Properties:
-      FunctionName: CNP-Automated-Remediation
-      Description: 'Radware CWP automated remediation Lambda which will run all the remediation actions'
+      FunctionName: SYN-Automated-Remediation
+      Description: 'Skyhawk Security SYN automated remediation Lambda which will run all the remediation actions'
       CodeUri:
-        Bucket: !Join [ '' , [ 'cnp-automated-remediation-' , !Ref AWS::Region ] ]
+        Bucket: !Join [ '' , [ 'syn-automated-remediation-' , !Ref AWS::Region ] ]
         Key: lambda.zip
       Runtime: python3.8
       Timeout: 120
@@ -67,7 +67,7 @@ Resources:
                   - "ec2:RevokeSecurityGroupIngress"
                   - "ec2:AuthorizeSecurityGroupIngress"
                   - "ec2:DescribeSecurityGroups"
-                  - "ec2:ModifyImageAttribute" 
+                  - "ec2:ModifyImageAttribute"
                   - "kms:EnableKeyRotation"
                   - "iam:UpdateAccessKey"
                   - "cloudtrail:UpdateTrail"
@@ -77,7 +77,7 @@ Resources:
                   - "iam:ListAccessKeys"
                   - "redshift:ModifyCluster"
                   - "rds:ModifyDBInstance"
-                  - "rds:ModifyDBSnapshotAttribute" 
+                  - "rds:ModifyDBSnapshotAttribute"
                   - "rds:ModifyDBClusterSnapshotAttribute"
                   - "rds:DescribeDBSecurityGroups"
                   - "rds:RevokeDBSecurityGroupIngress"
@@ -85,19 +85,19 @@ Resources:
             - Effect: Allow
               Action:
                   - "sts:AssumeRole"
-              Resource: "arn:aws:iam::*:role/CNPAutomatedRemediationAssumeRole"
+              Resource: "arn:aws:iam::*:role/SYNAutomatedRemediationAssumeRole"
             - Effect: Allow
               Action:
                   - "lambda:GetFunction"
               Resource: !Join [ '' , [ 'arn:aws:lambda:*:' , !Ref AWS::AccountId , ':function:*'] ]
       Environment:
         Variables:
-          CROSS_ACCOUNT_ROLE_NAME: CNPAutomatedRemediationAssumeRole
+          CROSS_ACCOUNT_ROLE_NAME: SYNAutomatedRemediationAssumeRole
 
 Outputs:
   LambdaARN:
-    Description: The ARN of the Radware CWP automated Lambda which will run all the remediation actions.
+    Description: The ARN of the Skyhawk Security SYN automated Lambda which will run all the remediation actions.
     Value: !GetAtt RemediationFunction.Arn
   CrossAccountRoleARN:
-    Description: IAM role ARN to be assumed by CNP for remediation on this account.
+    Description: IAM role ARN to be assumed by SYN for remediation on this account.
     Value: !GetAtt AssumeRole.Arn

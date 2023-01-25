@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "Secondary account setup for Radware CNP automated remediation"
+Description: "Secondary account setup for Skyhawk Security SYN automated remediation"
 Outputs:
   AssumeRoleARN:
     Description: IAM role ARN to be assumed by Lambda for remediation on this account.
@@ -15,9 +15,9 @@ Resources:
   AssumeRole:
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: CNPAutomatedRemediationAssumeRole
+      RoleName: SYNAutomatedRemediationAssumeRole
       Policies:
-        - PolicyName: RadwareCNPCrossAccountRemediation
+        - PolicyName: SkyhawkSecuritySYNCrossAccountRemediation
           PolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -34,7 +34,7 @@ Resources:
                   - "ec2:RevokeSecurityGroupIngress"
                   - "ec2:AuthorizeSecurityGroupIngress"
                   - "ec2:DescribeSecurityGroups"
-                  - "ec2:ModifyImageAttribute" 
+                  - "ec2:ModifyImageAttribute"
                   - "kms:EnableKeyRotation"
                   - "iam:UpdateAccessKey"
                   - "cloudtrail:UpdateTrail"
@@ -43,22 +43,22 @@ Resources:
                   - "iam:DeleteLoginProfile"
                   - "iam:ListAccessKeys"
                   - "redshift:ModifyCluster"
-                  - "rds:ModifyDBInstance" 
-                  - "rds:ModifyDBSnapshotAttribute" 
+                  - "rds:ModifyDBInstance"
+                  - "rds:ModifyDBSnapshotAttribute"
                   - "rds:ModifyDBClusterSnapshotAttribute"
                   - "rds:DescribeDBSecurityGroups"
                   - "rds:RevokeDBSecurityGroupIngress"
                 Resource: '*'
                 Effect: Allow
-                Sid: RadwareCNPRemedy20200623
+                Sid: SkyhawkSecuritySYNRemedy20200623
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
           - Action: 'sts:AssumeRole'
-            Sid: RadwareCNPCrossAccountRemedy
+            Sid: SkyhawkSecuritySYNCrossAccountRemedy
             Effect: Allow
             Principal:
-              AWS: !Join 
+              AWS: !Join
                 - ''
                 - - 'arn:aws:iam::'
                   - !Ref PrimaryAWSAccountID
